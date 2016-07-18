@@ -20,6 +20,8 @@ public class BaseEnemy : MonoBehaviour, Damagable, Movable
     protected int damage;
     [SerializeField]
     protected float attackRange;
+	[SerializeField]
+	protected float attackSpeed;
 
     [Header("Identifiers")]
     [SerializeField]
@@ -32,6 +34,8 @@ public class BaseEnemy : MonoBehaviour, Damagable, Movable
     protected bool canAttack;
     [SerializeField]
     protected bool isDead;
+	[SerializeField]
+	protected bool attackOnCooldown;
 
     [Header("Attack Goal")]
     [SerializeField]
@@ -62,6 +66,7 @@ public class BaseEnemy : MonoBehaviour, Damagable, Movable
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
         isDead = false;
+		attackOnCooldown = false;
     }
 
     public virtual void Move()
@@ -83,16 +88,17 @@ public class BaseEnemy : MonoBehaviour, Damagable, Movable
     public virtual void OnDeath()
     {
         isDead = true;
-        Debug.Log("Dead from base class");
+		StartCoroutine (Death ());
     }
 
     public virtual void Attack()
     {
-        if (canAttack)
-        {
-            Manager.Get().info.GateHealth -= damage;
-            //Debug.Log (GameInfo.GateHealth);
-        }
+		if (Vector3.Distance (transform.position, new Vector3 (target.position.x, 1, target.position.z)) <= attackRange) {
+			Manager.Get().info.GateHealth -= damage;
+			Debug.Log (Manager.Get().info.GateHealth);
+		}
+            
+
     }
 
     public virtual void TakeDamage(int dmg)
@@ -110,5 +116,16 @@ public class BaseEnemy : MonoBehaviour, Damagable, Movable
         Destroy(gameObject);
 
     }
+
+	IEnumerator AttackCooldown() {
+		if (!attackOnCooldown) {
+			//Attack
+			attackOnCooldown = true;
+			yield return new WaitForSeconds (attackSpeed);
+			attackOnCooldown = false;
+		} else {
+			yield return null;
+		}
+	}
 
 }

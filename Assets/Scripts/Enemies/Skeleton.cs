@@ -3,19 +3,23 @@ using System.Collections;
 
 public class Skeleton : BaseEnemy {
 
+	private NavMeshAgent agent;
+
 	void Awake()
     {
         health = 10;
         speed = 2;
-        name = "Skeleton";
-        type = EnemyTypes.WALKER;
-        canAttack = false;
         attackRange = 1.5f;
         damage = 1;
+		name = "Skeleton";
+		type = EnemyTypes.SKELETON;
         target = GameObject.FindGameObjectWithTag("Door").transform;
-        anim = GetComponent<Animator>();
-        rb = GetComponent<Rigidbody>();
-        isDead = false;
+		agent = GetComponent<NavMeshAgent> ();
+		//canAttack = false;
+        //anim = GetComponent<Animator>();
+        //rb = GetComponent<Rigidbody>();
+        //isDead = false;
+
     }
 
     void Update()
@@ -27,4 +31,9 @@ public class Skeleton : BaseEnemy {
         }
 
     }
+
+	public override void Move ()
+	{
+		agent.destination = target.position;
+	}
 }

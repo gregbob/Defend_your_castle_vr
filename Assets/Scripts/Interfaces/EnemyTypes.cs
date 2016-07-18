@@ -1,2 +1,2 @@
-﻿public enum EnemyTypes{WALKER, RUNNER};
+﻿public enum EnemyTypes{WALKER, RUNNER, SKELETON};
 

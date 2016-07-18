@@ -2,6 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 
+public struct SpawnArea {
+	public Vector2 p1 { get; set; }
+	public Vector2 p2 { get; set; }
+}
 
 public class EnemySpawner  {
 
@@ -12,6 +16,7 @@ public class EnemySpawner  {
 	 */
 
 
+
 	//private Component enemyScript;
 	private GameObject enemy;
     private Transform parent;
@@ -20,7 +25,7 @@ public class EnemySpawner  {
 	private List<GameObject> allEnemies;
 	private bool done;
 
-	public bool Done { get { return done; } }
+	public bool Done { get { return done; } set { done = value; } }
 
 	public EnemySpawner(ref List<GameObject> allEnemies, GameObject enemy, Transform parent, float minRate, float maxRate, int numSpawn) {
 		//enemyScript = script;

@@ -18,14 +18,17 @@ public class InputManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	    if (leftController.TriggerButtonDown)
-        {
-           
-            if (OnLeftTriggerDown != null)
-            {
-                OnLeftTriggerDown();
-            }
-                
-        }
+		if (leftController == null || rightController == null) {
+			return;
+		}
+//	    if (leftController.TriggerButtonDown)
+//        {
+//           
+//            if (OnLeftTriggerDown != null)
+//            {
+//                OnLeftTriggerDown();
+//            }
+//                
+//        }
 	}
 }
