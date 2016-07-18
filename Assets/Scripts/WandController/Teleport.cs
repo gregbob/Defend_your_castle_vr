@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[RequireComponent(typeof(TouchpadSelector))]
 public class Teleport : MonoBehaviour {
 
     [SerializeField]
@@ -10,26 +11,24 @@ public class Teleport : MonoBehaviour {
     private Transform Steam_vr;
 
     private WandController controller;
+    private TouchpadSelector selector;
 
     int pos = 0; 
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
         controller = GetComponent<WandController>();
+        selector = GetComponent<TouchpadSelector>();
 	}
 
-    //void TeleportNext()
-    //{
-    //    Debug.Log("Teleport");
-    //    Steam_vr.transform.position = waypoints[pos].position;
-    //    pos += 1;
-    //    if (pos == waypoints.Length)
-    //    {
-    //        pos = 0;
-    //    }
-    //}
-    public void TeleportTo(int loc)
+    void OnEnable()
     {
+        controller.OnTouchPadUp += TeleportTo;
+    }
+
+    public void TeleportTo()
+    {
+        var loc = selector.GetQuadrant();
         if (loc < waypoints.Length)
         {
             

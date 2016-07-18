@@ -24,13 +24,13 @@ public class GunController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	    if (controller.TriggerButtonDown)
-        {
-            Debug.Log("Shooting");
-            shoot.Shoot(100);
-            audioSource.clip = shootSound;
-            audioSource.Play();
-            controller.Vibrate(.2f);
-        }
+	    //if (controller.TriggerButtonDown)
+     //   {
+     //       Debug.Log("Shooting");
+     //       shoot.Shoot(100);
+     //       audioSource.clip = shootSound;
+     //       audioSource.Play();
+     //       controller.Vibrate(.2f);
+     //   }
 	}
 }

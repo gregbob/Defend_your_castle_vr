@@ -6,17 +6,28 @@ public class ShootRay : MonoBehaviour {
     [SerializeField]
     private ParticleSystem muzzleFlash;
 
+    private WandController controller;
+
+    private float distance = 100;
+
 	// Use this for initialization
-	void Start () {
-	
+	void Awake() {
+        controller = GetComponent<WandController>();
 	}
+
+    void OnEnable()
+    {
+        controller.OnTriggerDown += Shoot;
+    }
 	
 	// Update is called once per frame
 	void Update () {
         //Shoot(100);
 	}
 
-    public void Shoot(float distance)
+
+
+    public void Shoot()
     {
 
         RaycastHit hit;

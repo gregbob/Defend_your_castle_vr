@@ -14,38 +14,47 @@ public class TouchpadSelector : MonoBehaviour {
     public Canvas selector;
     public Image dot;
 
-    private Teleport teleport;
 
     
     // Use this for initialization
     void Awake () {
         controller = GetComponent<WandController>();
-        teleport = GetComponent<Teleport>();
         selector.enabled = false;
         deadzone = .1f;
         
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	    if (controller.touchpadButtonDown)
-        {
-            Debug.Log("down");
-            selector.enabled = true;
-        }
-        if (controller.touchpadButtonPressed)
-        {
-            //dot.rectTransform.position = new Vector3(controller.Axis0.x * size, controller.Axis0.y * size, 0);
-            dot.transform.localPosition = new Vector3(controller.Axis0.x * size * -1, controller.Axis0.y * size * -1, 0);
-        }
-        if (controller.touchpadButtonUp)
-        {
-            selector.enabled = false;
-            teleport.TeleportTo(GetQuadrant());
-        }
 
+    void OnEnable ()
+    {
+        controller.OnTouchPadDown += OpenSelector;
+        controller.OnTouchPadPress += MoveSelector;
+        controller.OnTouchPadUp += CloseSelector;
     }
 
+    void OnDisable()
+    {
+        controller.OnTouchPadDown -= OpenSelector;
+        controller.OnTouchPadPress -= MoveSelector;
+        controller.OnTouchPadUp -= CloseSelector;
+    }
+
+    void OpenSelector()
+    {
+        Debug.Log("Opening selector");
+        selector.enabled = true;
+    }
+
+    void MoveSelector()
+    {
+        dot.transform.localPosition = new Vector3(controller.Axis0.x * size * -1, controller.Axis0.y * size * -1, 0);
+    }
+
+    void CloseSelector()
+    {
+        Debug.Log("Closing selector");
+        selector.enabled = false;
+    }
+	
     public int GetQuadrant()
     {
         Vector2 axis = controller.Axis0;
