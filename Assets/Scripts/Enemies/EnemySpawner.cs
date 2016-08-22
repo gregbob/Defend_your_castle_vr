@@ -37,16 +37,26 @@ public class EnemySpawner  {
 		this.allEnemies = allEnemies;
 		done = false;
 	}
+    public EnemySpawner(GameObject enemy)
+    {
+        this.enemy = enemy;
+        allEnemies = new List<GameObject>();
+    }
 
 	public IEnumerator SpawnEnemy() {
-		int spawned = 0;
+
+        if (parent == null)
+            parent = new GameObject("Enemies").transform;
+
+        int spawned = 0;
+
 		while (spawned < numSpawn) {
 			var rand = Random.Range (minSpawnRate, maxSpawnRate);
 			yield return new WaitForSeconds (rand);
             var randPos = Random.Range(-20, 20);
 
             // Set enemy to be under the Enemies parent object in the hierarchy
-			var go = (GameObject) UnityEngine.Object.Instantiate (enemy, new Vector3(10,0,randPos), enemy.transform.rotation);
+			var go = UnityEngine.Object.Instantiate (enemy, new Vector3(10,0,randPos), enemy.transform.rotation) as GameObject;
             go.transform.SetParent(parent);
 
             // Add newly spawned enemy to list of currently alive enemies
@@ -56,4 +66,35 @@ public class EnemySpawner  {
 		done = true;
 
 	}
+
+    public void Spawn()
+    {
+        if (parent == null)
+            parent = new GameObject("Enemies").transform;
+        var randZ = Random.Range(-20, 20);
+        var go = Object.Instantiate(enemy, new Vector3(0, 0, randZ), enemy.transform.rotation) as GameObject;
+        go.transform.SetParent(parent);
+    }
+
+    public void Spawn(int num)
+    {
+        if (parent == null)
+            parent = new GameObject("Enemies").transform;
+        for (int i = 0; i < num; i++)
+        {
+            var randX = Random.Range(-20, 20);
+            var go = Object.Instantiate(enemy, new Vector3(randX, 0, 20), enemy.transform.rotation) as GameObject;
+            go.transform.SetParent(parent);
+
+            foreach(GameObject obj in allEnemies)
+            {
+                if (obj != null)
+                    Physics.IgnoreCollision(go.GetComponent<Collider>(), obj.GetComponent<Collider>(), true);
+            }
+
+            allEnemies.Add(go);
+        }
+
+        
+    }
 }

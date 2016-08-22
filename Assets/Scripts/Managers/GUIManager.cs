@@ -67,6 +67,7 @@ public class GUIManager : MonoBehaviour {
 
 	void Play() {
 		Manager.Get ().gm.ChangeState (GameManager.GameState.WAVE);
+        Debug.Log("play");
 	}
 
 	void PlayAgain() {

@@ -3,12 +3,10 @@ using System.Collections;
 using System;
 
 [RequireComponent(typeof(Rigidbody))]
-[RequireComponent(typeof(Animator))]
 
 public class BaseEnemy : MonoBehaviour, Damagable, Movable
 {
     #region Fields
-    protected Animator anim;
     protected Rigidbody rb;
  
     [Header("Stats")]
@@ -62,8 +60,7 @@ public class BaseEnemy : MonoBehaviour, Damagable, Movable
         canAttack = false;
         attackRange = 1.5f;
         damage = 1;
-        target = GameObject.FindGameObjectWithTag("Door").transform;
-        anim = GetComponent<Animator>();
+        target = GameObject.FindGameObjectWithTag("Player").transform;
         rb = GetComponent<Rigidbody>();
         isDead = false;
 		attackOnCooldown = false;
@@ -94,8 +91,9 @@ public class BaseEnemy : MonoBehaviour, Damagable, Movable
     public virtual void Attack()
     {
 		if (Vector3.Distance (transform.position, new Vector3 (target.position.x, 1, target.position.z)) <= attackRange) {
-			Manager.Get().info.GateHealth -= damage;
-			Debug.Log (Manager.Get().info.GateHealth);
+           
+			//Manager.Get().info.GateHealth -= damage;
+		//	Debug.Log (Manager.Get().info.GateHealth);
 		}
             
 
@@ -106,6 +104,7 @@ public class BaseEnemy : MonoBehaviour, Damagable, Movable
         health -= dmg;
         if (health <= 0)
         {
+            Debug.Log("HIT");
             OnDeath();
         }
     }
