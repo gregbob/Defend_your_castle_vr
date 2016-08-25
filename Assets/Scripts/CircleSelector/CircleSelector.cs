@@ -22,6 +22,9 @@ public class CircleSelector : MonoBehaviour {
     protected List<CircleNode> nodes;
     protected List<CircleNode> selectedNodes;
 
+     public delegate void Selection();
+    public event Selection OnSelection;
+
     // Use this for initialization
     protected virtual void Awake () {
         selectedNodes = new List<CircleNode>();
@@ -67,7 +70,7 @@ public class CircleSelector : MonoBehaviour {
 
     public virtual void CenterNodes()
     {
-        foreach (CircleNode n in selectedNodes)
+        foreach (CircleNode n in nodes)
         {
             n.MoveTowards(circle.transform.position);
 

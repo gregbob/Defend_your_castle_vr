@@ -14,12 +14,12 @@ public class SpellContainer  {
         GameObject spellContainer = new GameObject("_SpellContainer");
 
         spellSequences = new Dictionary<SelectionSequence, BaseSpell>();
-        
-        spellSequences.Add(CCW, spellContainer.AddComponent<BoomSpell>());
-        spellSequences.Add(CW, spellContainer.AddComponent<ThunderSpell>());
-        spellSequences.Add(NS, spellContainer.AddComponent<FireballSpell>());
 
-        DisableAllSpells(spellContainer);
+        spellSequences.Add(CCW, new BoomSpell());
+        spellSequences.Add(CW, new ThunderSpell());
+        spellSequences.Add(NS, new FireballSpell());
+
+        //DisableAllSpells(spellContainer);
 
         return spellSequences;
     }

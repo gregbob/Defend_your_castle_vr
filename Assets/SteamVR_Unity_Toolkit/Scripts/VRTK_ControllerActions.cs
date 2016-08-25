@@ -23,7 +23,12 @@
 
         public void ToggleControllerModel(bool state, GameObject grabbedChildObject)
         {
-            foreach (MeshRenderer renderer in this.GetComponentsInChildren<MeshRenderer>())
+            if (!enabled)
+            {
+                return;
+            }
+
+            foreach (MeshRenderer renderer in GetComponentsInChildren<MeshRenderer>())
             {
                 if (renderer.gameObject != grabbedChildObject && (grabbedChildObject == null || !renderer.transform.IsChildOf(grabbedChildObject.transform)))
                 {
@@ -31,7 +36,7 @@
                 }
             }
 
-            foreach (SkinnedMeshRenderer renderer in this.GetComponentsInChildren<SkinnedMeshRenderer>())
+            foreach (SkinnedMeshRenderer renderer in GetComponentsInChildren<SkinnedMeshRenderer>())
             {
                 if (renderer.gameObject != grabbedChildObject && (grabbedChildObject == null || !renderer.transform.IsChildOf(grabbedChildObject.transform)))
                 {
@@ -43,8 +48,13 @@
 
         public void SetControllerOpacity(float alpha)
         {
+            if (!enabled)
+            {
+                return;
+            }
+
             alpha = Mathf.Clamp(alpha, 0f, 1f);
-            foreach (var renderer in this.gameObject.GetComponentsInChildren<Renderer>())
+            foreach (var renderer in gameObject.GetComponentsInChildren<Renderer>())
             {
                 if (alpha < 1f)
                 {
@@ -73,6 +83,11 @@
 
         public void HighlightControllerElement(GameObject element, Color? highlight, float fadeDuration = 0f)
         {
+            if (!enabled)
+            {
+                return;
+            }
+
             var renderer = element.GetComponent<Renderer>();
             if (renderer && renderer.material)
             {
@@ -87,6 +102,11 @@
 
         public void UnhighlightControllerElement(GameObject element)
         {
+            if (!enabled)
+            {
+                return;
+            }
+
             var renderer = element.GetComponent<Renderer>();
             if (renderer && renderer.material)
             {
@@ -146,12 +166,22 @@
 
         public void TriggerHapticPulse(ushort strength)
         {
+            if (!enabled)
+            {
+                return;
+            }
+
             hapticPulseStrength = (strength <= maxHapticVibration ? strength : maxHapticVibration);
             device.TriggerHapticPulse(hapticPulseStrength);
         }
 
         public void TriggerHapticPulse(ushort strength, float duration, float pulseInterval)
         {
+            if (!enabled)
+            {
+                return;
+            }
+
             hapticPulseStrength = (strength <= maxHapticVibration ? strength : maxHapticVibration);
             StartCoroutine(HapticPulse(duration, hapticPulseStrength, pulseInterval));
         }
@@ -159,7 +189,7 @@
         private void Awake()
         {
             trackedController = GetComponent<SteamVR_TrackedObject>();
-            this.gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
+            gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
             storedMaterials = new Dictionary<GameObject, Material>();
         }
 

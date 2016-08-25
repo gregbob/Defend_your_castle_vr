@@ -7,10 +7,13 @@ public class MagicCircle : CircleSelector {
 
     private Dictionary<SelectionSequence, BaseSpell> spellSequences;
 
+    public delegate void Selection();
+    public event Selection OnSelection;
+
     protected override void Awake()
     {
         base.Awake();
-        spellSequences = SpellContainer.GetSpellDictionary();
+      //  spellSequences = SpellContainer.GetSpellDictionary();
 
     }
 
@@ -18,16 +21,16 @@ public class MagicCircle : CircleSelector {
     protected override void Start()
     {
         base.Start();
-        var events = GetComponentInParent<VRTK_ControllerEvents>();
-        if (events == null)
-        {
-            Debug.Log("Controller events is null. Calling from MagicCircle");
-            return;
-        }
+        //var events = GetComponentInParent<VRTK_ControllerEvents>();
+        //if (events == null)
+        //{
+        //    Debug.Log("Controller events is null. Calling from MagicCircle");
+        //    return;
+        //}
 
         // When touchpad is released, check to see if any sequences have been correctly selected
-        events.TouchpadReleased += new ControllerInteractionEventHandler(CheckSequence);
-        events.TouchpadReleased += new ControllerInteractionEventHandler(CollapseCircle);
+        //events.TouchpadReleased += new ControllerInteractionEventHandler(CheckSequence);
+        //events.TouchpadReleased += new ControllerInteractionEventHandler(CollapseCircle);
         
 
     }

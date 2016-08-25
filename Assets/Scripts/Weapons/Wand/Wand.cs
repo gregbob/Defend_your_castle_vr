@@ -5,16 +5,17 @@ using System.Collections.Generic;
 
 public class Wand : VRTK_InteractableObject {
 
-    private bool canCreateSpellWheel = true;
+    private CircleSelector circleSelector;
+    private Dictionary<SelectionSequence, BaseSpell> spellSequences;
 
     public override void Grabbed(GameObject currentGrabbingObject)
     {
         base.Grabbed(currentGrabbingObject);
-        gameObject.AddComponent<MagicCircle>();
-
-        //StartCoroutine(WaitTilComponentExists());
+        circleSelector = gameObject.AddComponent<CircleSelector>();
+        spellSequences = SpellContainer.GetSpellDictionary();
     }
 
+    /* When the button designated by the use alias is pressed, create a circle to select a spell */
     public override void StartUsing(GameObject currentUsingObject)
     {
         base.StartUsing(currentUsingObject);
@@ -24,60 +25,33 @@ public class Wand : VRTK_InteractableObject {
         
     }
 
-    public void DisableUsing()
+    public override void StopUsing(GameObject previousUsingObject)
     {
-        canCreateSpellWheel = false;
+        base.StopUsing(previousUsingObject);
+        //if(CheckSequence())
+        //{
+
+
+        //}
+        CheckSequence();
+        circleSelector.CenterNodes();
+        circleSelector.DestroyCircle(.2f);
 
     }
 
-    //public void DestinationSetTest(object sender, DestinationMarkerEventArgs e)
-    //{
-    //    Debug.Log("Distance " + e.distance);
-    //    Debug.Log("Location " + e.target);
-    //}
+    public bool CheckSequence()
+    {
+        foreach (KeyValuePair<SelectionSequence, BaseSpell> entry in spellSequences)
+        {
+            if (circleSelector.CheckSelectionSequence(entry.Key))
+            {
+                BaseSpell spell = entry.Value;
+                gameObject.AddComponent(spell.GetType());
+                return true;
+            }
+        }
+        return false;
+    }
 
-    //IEnumerator WaitTilComponentExists()
-    //{
-    //    while (GetComponentInParent<VRTK_SimplePointer>() == null)
-    //    {
-    //        Debug.Log("Null");
-    //        yield return null;
-    //    }
-    //    GetComponentInParent<VRTK_SimplePointer>().DestinationMarkerSet += new DestinationMarkerEventHandler(DestinationSetTest);
-    //    Debug.Log("Found");
-    //}
-
-
-
-  
-
-
-
-
-    //protected override void Start()
-    //{
-    //    base.Start();
-    //    GetComponentInParent<VRTK_ControllerEvents>().useToggleButton = VRTK_ControllerEvents.ButtonAlias.Touchpad_Press;
-    //}
-
-    //protected override void OnDisable()
-    //{
-    //    base.OnDisable();
-    //    GetComponentInParent<VRTK_ControllerEvents>().useToggleButton = VRTK_ControllerEvents.ButtonAlias.Trigger;
-    //}
-
-
-
-    //IEnumerator RotateParent (GameObject parent, float speed)
-    //{
-    //    var ang = 0f;
-    //    while (ang < 360)
-    //    {
-    //        Debug.Log(ang);
-    //        ang += Time.deltaTime * speed;
-    //        parent.transform.rotation = Quaternion.Euler(0, 0, ang);
-    //        yield return null;
-    //    }
-    //}
 
 }

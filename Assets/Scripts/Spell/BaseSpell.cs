@@ -6,6 +6,7 @@ public class BaseSpell : MonoBehaviour {
 
     protected Transform firingLocation;
     protected BasePointer pointer;
+    protected VRTK_SimplePointer pointer_real;
 
     public virtual void CastSpell(object sender, ControllerInteractionEventArgs e)
     {
@@ -85,6 +86,11 @@ public class BaseSpell : MonoBehaviour {
             ptr.transform.localRotation = Quaternion.Euler(0, 0, 0);
             pointer = ptr.GetComponent<BasePointer>();
         }
+
+        if (pointer_real != null)
+        {
+            pointer_real.ToggleBeam(true);
+        }    
         
     }
 
@@ -95,7 +101,12 @@ public class BaseSpell : MonoBehaviour {
             Destroy(pointer.gameObject);
             pointer = null;
         }
-       
+
+        if (pointer_real != null)
+        {
+            pointer_real.ToggleBeam(false);
+        }
+
 
     }
 
@@ -118,7 +129,15 @@ public class BaseSpell : MonoBehaviour {
         }
         firingLocation = location.FiringLocation;
 
-        
+        var ptr = GetComponentInParent<VRTK_SimplePointer>();
+        if (ptr == null)
+        {
+            Debug.Log("Object does not have a Simple Pointer attached");
+            return;
+        }
+        pointer_real = ptr;
+
+
 
 
 
