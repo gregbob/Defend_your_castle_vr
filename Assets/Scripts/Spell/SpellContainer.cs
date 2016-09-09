@@ -20,7 +20,7 @@ public class SpellContainer  {
         spellSequences.Add(NS, new FireballSpell());
 
         //DisableAllSpells(spellContainer);
-
+       
         return spellSequences;
     }
 
